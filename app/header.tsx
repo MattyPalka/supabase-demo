@@ -21,7 +21,7 @@ export const Header = async () => {
         <span className="ml-auto">
           {user ? (
             <span className="flex gap-4">
-              Hey, {userProfile.name || user.email}!{" "}
+              Hey, {userProfile?.name || user.email}!{" "}
               <span className="border-r"></span>{" "}
               <Link href="/" className="text-neutral-100 hover:underline">
                 Home

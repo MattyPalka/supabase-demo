@@ -1,6 +1,7 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import { Chat } from "./chat";
 
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
@@ -10,7 +11,7 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="flex flex-col max-w-3xl">
+    <div className="flex flex-col max-w-3xl gap-8">
       <div className="flex gap-8 ">
         <Image
           src="/supabase.svg"
@@ -28,7 +29,7 @@ export default async function Index() {
           priority
         />
       </div>
-      {user && <div>chat</div>}
+      {user && <Chat />}
     </div>
   );
 }

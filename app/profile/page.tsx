@@ -10,10 +10,11 @@ export default function Profile() {
   const router = useRouter();
 
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    e.preventDefault();
+
     await supabase.from("users").upsert({ name: username, user_id: user?.id });
   };
 
