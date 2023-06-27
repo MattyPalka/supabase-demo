@@ -9,6 +9,11 @@ export const Header = async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  const { data: userProfile } = await supabase
+    .from("users")
+    .select("*")
+    .eq("user_id", user?.id)
+    .maybeSingle();
 
   return (
     <div className="flex flex-col max-w-3xl mt-24">
@@ -16,7 +21,8 @@ export const Header = async () => {
         <span className="ml-auto">
           {user ? (
             <span className="flex gap-4">
-              Hey, {user.email}! <span className="border-r"></span>{" "}
+              Hey, {userProfile.name || user.email}!{" "}
+              <span className="border-r"></span>{" "}
               <Link href="/" className="text-neutral-100 hover:underline">
                 Home
               </Link>

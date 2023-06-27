@@ -1,19 +1,20 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default async function Profile() {
-  const [name, setName] = useState<undefined | string>();
+export default function Profile() {
   const supabase = createClientComponentClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [username, setUsername] = useState<string>("");
+  const router = useRouter();
 
   const handleProfileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     e.preventDefault();
-    await supabase.from("users").insert({ user_id: user?.id, name });
+    await supabase.from("users").upsert({ name: username, user_id: user?.id });
   };
 
   return (
@@ -26,9 +27,8 @@ export default async function Profile() {
       </label>
       <input
         className="rounded-md px-4 py-2 bg-inherit border mb-6 text-neutral-100"
-        name="name"
-        onChange={(e) => setName(e.target.value)}
-        value={name}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         placeholder="Krzysztof Ibisz"
       />
 
